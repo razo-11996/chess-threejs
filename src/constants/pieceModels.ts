@@ -1,12 +1,14 @@
 import type { PieceSymbol } from 'chess.js'
 
+const BASE = import.meta.env.BASE_URL
+
 export const PIECE_MODEL_URL: Record<PieceSymbol, string> = {
-  p: '/models/pawn/scene.gltf',
-  r: '/models/rook/scene.gltf',
-  n: '/models/knight/scene.gltf',
-  b: '/models/bishop/scene.gltf',
-  q: '/models/queen/scene.gltf',
-  k: '/models/king/scene.gltf',
+  p: `${BASE}models/pawn/scene.gltf`,
+  r: `${BASE}models/rook/scene.gltf`,
+  n: `${BASE}models/knight/scene.gltf`,
+  b: `${BASE}models/bishop/scene.gltf`,
+  q: `${BASE}models/queen/scene.gltf`,
+  k: `${BASE}models/king/scene.gltf`,
 }
 
 /**

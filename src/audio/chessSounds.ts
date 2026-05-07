@@ -4,9 +4,11 @@ import type { Chess, Move } from 'chess.js'
  * Audio files in `public/sounds/` (Vite serves them as `/sounds/...`).
  * Add more files and extend `CLIP` / the `play*` functions as needed.
  */
+const BASE = import.meta.env.BASE_URL
+
 const CLIP = {
-  move: '/sounds/move.mp3',
-  preview: '/sounds/preview.mp3',
+  move: `${BASE}sounds/move.mp3`,
+  preview: `${BASE}sounds/preview.mp3`,
 } as const
 
 const VOLUME = 0.42
