@@ -11,7 +11,7 @@ export default function Square({ x, z }: SquareProps) {
   const selectSquare = useGameStore((s) => s.selectSquare)
   const move = useGameStore((s) => s.move)
 
-  const isDark = (x + z) % 2 === 1
+  const isDark = (x + z) % 2 === 0
   const square = toSquare(x, z)
 
   const piece = board[z][x]
@@ -83,7 +83,7 @@ export default function Square({ x, z }: SquareProps) {
 
   return (
     <mesh
-      position={[x - 3.5, 0, z - 3.5]}
+      position={[3.5 - x, 0, z - 3.5]}
       onClick={handleClick}
       onPointerOver={(e) => {
         e.stopPropagation()

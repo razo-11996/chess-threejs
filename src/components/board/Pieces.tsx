@@ -11,7 +11,7 @@ export default function Pieces() {
           if (!cell) return null
           const { square, type, color } = cell
           return (
-            <group key={`${square}-${type}-${color}`} position={[x - 3.5, 0, z - 3.5]}>
+            <group key={`${square}-${type}-${color}`} position={[3.5 - x, 0, z - 3.5]}>
               <ChessPieceMesh type={type} color={color} />
             </group>
           )
