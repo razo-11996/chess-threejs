@@ -1,8 +1,11 @@
 import { useGameStore } from '../../game/gameStore'
+import { boardToWorld, squareToWorld } from '../../utils/boardCoords'
+import AnimatedPieceGroup from '../pieces/AnimatedPieceGroup'
 import ChessPieceMesh from '../pieces/ChessPieceMesh'
 
 export default function Pieces() {
   const board = useGameStore((s) => s.board)
+  const lastMove = useGameStore((s) => s.lastMove)
 
   return (
     <group>
@@ -10,10 +13,12 @@ export default function Pieces() {
         row.map((cell, x) => {
           if (!cell) return null
           const { square, type, color } = cell
+          const to = boardToWorld(x, z)
+          const from = lastMove && lastMove.to === square ? squareToWorld(lastMove.from) : null
           return (
-            <group key={`${square}-${type}-${color}`} position={[3.5 - x, 0, z - 3.5]}>
+            <AnimatedPieceGroup key={`${square}-${type}-${color}`} from={from} to={to}>
               <ChessPieceMesh type={type} color={color} />
-            </group>
+            </AnimatedPieceGroup>
           )
         })
       )}

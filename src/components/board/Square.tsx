@@ -8,8 +8,13 @@ export default function Square({ x, z }: SquareProps) {
   const selected = useGameStore((s) => s.selected)
   const possibleMoves = useGameStore((s) => s.possibleMoves)
   const resultMessage = useGameStore((s) => s.resultMessage)
+  const thinking = useGameStore((s) => s.thinking)
+  const players = useGameStore((s) => s.players)
+  const turn = useGameStore((s) => s.turn)
   const selectSquare = useGameStore((s) => s.selectSquare)
   const move = useGameStore((s) => s.move)
+
+  const interactionLocked = Boolean(resultMessage) || thinking || players[turn].kind !== 'human-local'
 
   const isDark = (x + z) % 2 === 0
   const square = toSquare(x, z)
@@ -20,7 +25,7 @@ export default function Square({ x, z }: SquareProps) {
   const selectedPiece = selected ? pieceAtSquare(board, selected) : null
 
   const handleClick = () => {
-    if (resultMessage) return
+    if (interactionLocked) return
 
     if (!selected) {
       if (!piece) return
@@ -87,7 +92,7 @@ export default function Square({ x, z }: SquareProps) {
       onClick={handleClick}
       onPointerOver={(e) => {
         e.stopPropagation()
-        document.body.style.cursor = resultMessage ? 'default' : 'pointer'
+        document.body.style.cursor = interactionLocked ? 'default' : 'pointer'
       }}
       onPointerOut={() => {
         document.body.style.cursor = 'default'

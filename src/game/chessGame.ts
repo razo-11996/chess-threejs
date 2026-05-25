@@ -20,11 +20,14 @@ function gameResultMessage(): string | null {
 }
 
 export function takeGameSnapshot(): GameSnapshot {
+  const verbose = chess.history({ verbose: true })
+  const last = verbose[verbose.length - 1]
   return {
     board: normalizeBoard(chess.board()),
     turn: chess.turn(),
     resultMessage: gameResultMessage(),
     inCheck: !chess.isGameOver() && chess.isCheck(),
     moveHistory: chess.history(),
+    lastMove: last ? { from: last.from, to: last.to } : null,
   }
 }
