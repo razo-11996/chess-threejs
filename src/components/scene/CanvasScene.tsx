@@ -1,12 +1,13 @@
-import { Suspense } from 'react'
 import * as THREE from 'three'
-import { Canvas } from '@react-three/fiber'
-import { Environment, OrbitControls } from '@react-three/drei'
+import { Suspense } from 'react'
 import Board from '../board/Board'
-import DirectionalSun from './DirectionalSun'
-import TableSetting from './TableSetting'
-import BoardFrame from '../board/BoardFrame'
 import Pieces from '../board/Pieces'
+import TableSetting from './TableSetting'
+import { Canvas } from '@react-three/fiber'
+import BoardFrame from '../board/BoardFrame'
+import DirectionalSun from './DirectionalSun'
+import BoardNotation from '../board/BoardNotation'
+import { Environment, OrbitControls } from '@react-three/drei'
 
 export default function CanvasScene() {
   return (
@@ -37,6 +38,9 @@ export default function CanvasScene() {
       <group position={[0, 0.02, 0]}>
         <BoardFrame />
         <Board />
+        <Suspense fallback={null}>
+          <BoardNotation />
+        </Suspense>
         <Suspense fallback={null}>
           <Pieces />
         </Suspense>
