@@ -30,6 +30,7 @@ function ctx(): AudioContext {
       (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext
     )()
   }
+
   if (audioCtx.state === 'suspended') void audioCtx.resume()
   return audioCtx
 }
@@ -42,13 +43,17 @@ function tone(freq: number, duration: number, when: number, type: OscillatorType
   const c = ctx()
   const osc = c.createOscillator()
   const g = c.createGain()
+
   osc.type = type
   osc.frequency.setValueAtTime(freq, when)
+
   g.gain.setValueAtTime(0.0001, when)
   g.gain.exponentialRampToValueAtTime(peak, when + 0.012)
   g.gain.exponentialRampToValueAtTime(0.0001, when + duration)
+
   osc.connect(g)
   g.connect(c.destination)
+
   osc.start(when)
   osc.stop(when + duration + 0.02)
 }
@@ -85,6 +90,7 @@ function synthCapture() {
   try {
     const c = ctx()
     const t = now()
+
     const dur = 0.09
     const bufferSize = c.sampleRate * dur
     const buffer = c.createBuffer(1, bufferSize, c.sampleRate)
@@ -92,14 +98,18 @@ function synthCapture() {
     for (let i = 0; i < bufferSize; i++) {
       data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35)) * 0.45
     }
+
     const src = c.createBufferSource()
     src.buffer = buffer
+
     const g = c.createGain()
     g.gain.setValueAtTime(0.0001, t)
     g.gain.exponentialRampToValueAtTime(0.14, t + 0.015)
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur)
+
     src.connect(g)
     g.connect(c.destination)
+
     src.start(t)
     tone(180, 0.11, t, 'sine', 0.07)
   } catch {

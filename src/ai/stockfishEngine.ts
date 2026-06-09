@@ -35,10 +35,12 @@ let currentSkill = -1
 
 function ensureWorker(): Worker {
   if (worker) return worker
+
   const w = new Worker(stockfishWorkerUrl)
   w.addEventListener('message', handleMessage)
   w.postMessage('uci')
   w.postMessage('isready')
+
   worker = w
   return w
 }
@@ -56,6 +58,7 @@ function handleMessage(event: MessageEvent) {
   } else {
     finished.resolve(parseUciMove(uci))
   }
+
   pump()
 }
 
@@ -70,12 +73,14 @@ function parseUciMove(uci: string): UciMove {
 function applySkill(w: Worker, level: number) {
   const clamped = Math.max(0, Math.min(20, Math.round(level)))
   if (clamped === currentSkill) return
+
   currentSkill = clamped
   w.postMessage(`setoption name Skill Level value ${clamped}`)
 }
 
 function pump() {
   if (active || queue.length === 0) return
+
   const next = queue.shift()!
   if (next.cancelled) {
     next.resolve(null)
@@ -84,6 +89,7 @@ function pump() {
   }
 
   active = next
+
   const w = ensureWorker()
   applySkill(w, next.opts.skillLevel)
   w.postMessage(`position fen ${next.fen}`)
@@ -108,6 +114,7 @@ export function requestMove(fen: string, opts: RequestOpts): Promise<UciMove | n
  */
 export function abort() {
   for (const p of queue) p.cancelled = true
+
   if (active) {
     active.cancelled = true
     worker?.postMessage('stop')
